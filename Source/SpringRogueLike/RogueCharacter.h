@@ -26,7 +26,10 @@ protected:
 	void MoveRight(float Delta);
 	void Turn(float Delta);
 	void LookUp(float Delta);
+	void PrimaryAttack();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle")
+	TSubclassOf<AActor> ParticleClass;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

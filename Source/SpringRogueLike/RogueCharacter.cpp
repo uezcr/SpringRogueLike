@@ -4,6 +4,7 @@
 #include "RogueCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ARogueCharacter::ARogueCharacter(const FObjectInitializer& ObjectInitializer)
@@ -15,6 +16,10 @@ ARogueCharacter::ARogueCharacter(const FObjectInitializer& ObjectInitializer)
 
 	CameraBoom->SetupAttachment(RootComponent);
 	FollowCamera->SetupAttachment(CameraBoom);
+
+	this->bUseControllerRotationYaw = false;
+	CameraBoom->bUsePawnControlRotation = true;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 }
 
@@ -55,6 +60,15 @@ void ARogueCharacter::LookUp(float Delta)
 	AddControllerPitchInput(Delta);
 }
 
+void ARogueCharacter::PrimaryAttack()
+{
+	FVector SpawnLocation = GetMesh()->GetSocketLocation("Muzzle_R");
+	FTransform SpawnTransform(GetControlRotation(), SpawnLocation);
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AActor>(ParticleClass,SpawnTransform,SpawnParameters);
+}
+
 // Called every frame
 void ARogueCharacter::Tick(float DeltaTime)
 {
@@ -70,5 +84,7 @@ void ARogueCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("MoveRight", this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ThisClass::PrimaryAttack);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
 
