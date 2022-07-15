@@ -2,13 +2,17 @@
 
 
 #include "RogueInteractActor.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
-ARogueInteractActor::ARogueInteractActor()
+ARogueInteractActor::ARogueInteractActor(const FObjectInitializer& ObjectInitializer)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
+	this->SetRootComponent(BaseMesh);
+	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>("LidMesh");
+	LidMesh->SetupAttachment(BaseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -23,5 +27,10 @@ void ARogueInteractActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ARogueInteractActor::Interact_Implementation(APawn* InPawn)
+{
+	LidMesh->SetRelativeLocation(FVector(0.0f,0.0f,100.0f));
 }
 

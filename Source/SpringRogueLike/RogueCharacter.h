@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class URogueTraceComponent;
 
 UCLASS()
 class SPRINGROGUELIKE_API ARogueCharacter : public ACharacter
@@ -27,6 +28,7 @@ protected:
 	void Turn(float Delta);
 	void LookUp(float Delta);
 	void PrimaryAttack();
+	void PrimaryInteract();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle")
 	TSubclassOf<AActor> ParticleClass;
@@ -36,9 +38,15 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component|Camera", Meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component|Camera", Meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Custom", Meta = (AllowPrivateAccess = "true"))
+	URogueTraceComponent* TraceComponent;
+	
+	
 };

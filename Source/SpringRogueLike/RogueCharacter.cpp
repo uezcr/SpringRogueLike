@@ -2,9 +2,12 @@
 
 
 #include "RogueCharacter.h"
+
+#include "RogueTraceComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "RogueTraceComponent.h"
 
 // Sets default values
 ARogueCharacter::ARogueCharacter(const FObjectInitializer& ObjectInitializer)
@@ -13,6 +16,7 @@ ARogueCharacter::ARogueCharacter(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = true;
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
+	TraceComponent = CreateDefaultSubobject<URogueTraceComponent>("TraceComponent");
 
 	CameraBoom->SetupAttachment(RootComponent);
 	FollowCamera->SetupAttachment(CameraBoom);
@@ -69,6 +73,11 @@ void ARogueCharacter::PrimaryAttack()
 	GetWorld()->SpawnActor<AActor>(ParticleClass,SpawnTransform,SpawnParameters);
 }
 
+void ARogueCharacter::PrimaryInteract()
+{
+	TraceComponent->PrimaryInteract();
+}
+
 // Called every frame
 void ARogueCharacter::Tick(float DeltaTime)
 {
@@ -86,5 +95,6 @@ void ARogueCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ThisClass::PrimaryAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ThisClass::PrimaryInteract);
 }
 
