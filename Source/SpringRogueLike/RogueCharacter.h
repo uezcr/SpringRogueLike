@@ -30,6 +30,7 @@ protected:
 	void LookUp(float Delta);
 	void PrimaryAttack();
 	void PrimaryInteract();
+	void PrimaryAttack_TimeElapsed();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle")
 	TSubclassOf<AActor> ParticleClass;
@@ -44,12 +45,11 @@ public:
 
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component|Camera", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", Meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component|Camera", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", Meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Custom", Meta = (AllowPrivateAccess = "true"))
 	URogueTraceComponent* TraceComponent;
-	
-	
+	FTimerHandle TimerHandle_PrimaryAttack;
 };

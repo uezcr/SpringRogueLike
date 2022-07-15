@@ -66,16 +66,23 @@ void ARogueCharacter::LookUp(float Delta)
 
 void ARogueCharacter::PrimaryAttack()
 {
-	FVector SpawnLocation = GetMesh()->GetSocketLocation("Muzzle_R");
-	FTransform SpawnTransform(GetControlRotation(), SpawnLocation);
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	GetWorld()->SpawnActor<AActor>(ParticleClass,SpawnTransform,SpawnParameters);
+	PlayAnimMontage(AttackMontage);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PrimaryAttack,this,&ThisClass::PrimaryAttack_TimeElapsed,0.2f);
+	//GetWorld()->GetTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
 }
 
 void ARogueCharacter::PrimaryInteract()
 {
 	TraceComponent->PrimaryInteract();
+}
+
+void ARogueCharacter::PrimaryAttack_TimeElapsed()
+{
+	FVector SpawnLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FTransform SpawnTransform(GetControlRotation(), SpawnLocation);
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AActor>(ParticleClass,SpawnTransform,SpawnParameters);
 }
 
 // Called every frame
