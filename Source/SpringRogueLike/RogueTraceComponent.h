@@ -17,6 +17,7 @@ public:
 	URogueTraceComponent();
 
 	void PrimaryInteract();
+	void MultiInteract();
 
 protected:
 	// Called when the game starts

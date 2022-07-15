@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class URogueTraceComponent;
+class UAnimMontage;
 
 UCLASS()
 class SPRINGROGUELIKE_API ARogueCharacter : public ACharacter
@@ -32,6 +33,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle")
 	TSubclassOf<AActor> ParticleClass;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Animations")
+	UAnimMontage* AttackMontage;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
